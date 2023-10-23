@@ -154,7 +154,8 @@ export const dynamicRoutesPlugin = async (
 
 export async function resolveDynamicRoutes(
   srcDir: string,
-  routes: string[]
+  routes: string[],
+  vite: ViteDevServer
 ): Promise<SiteConfig['dynamicRoutes']> {
   const pendingResolveRoutes: Promise<ResolvedRouteConfig[]>[] = []
   const routeFileToModulesMap: Record<string, Set<string>> = {}
@@ -183,7 +184,7 @@ export async function resolveDynamicRoutes(
     let mod = routeModuleCache.get(pathsFile)
     if (!mod) {
       try {
-        mod = (await loadConfigFromFile({} as any, pathsFile)) as RouteModule
+        mod = (await vite.ssrLoadModule(pathsFile)) as RouteModule
         routeModuleCache.set(pathsFile, mod)
       } catch (e) {
         console.warn(
