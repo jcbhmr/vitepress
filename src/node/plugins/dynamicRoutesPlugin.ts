@@ -185,7 +185,7 @@ export async function resolveDynamicRoutes(
     if (!mod) {
       try {
         mod = (await vite.ssrLoadModule(pathsFile)) as RouteModule
-        const paths = mod.paths;
+        const paths = mod.paths
         routeModuleCache.set(pathsFile, mod)
       } catch (e) {
         console.warn(
