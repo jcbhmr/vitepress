@@ -25,23 +25,25 @@ defineProps<{
     :tag="link ? 'a' : 'div'"
   >
     <article class="box">
-      <div v-if="typeof icon === 'object' && icon.wrap" class="icon">
+      <h2 class="title">
+        <div v-if="typeof icon === 'object' && icon.wrap" class="icon">
+          <VPImage
+            :image="icon"
+            :alt="icon.alt"
+            :height="icon.height || 48"
+            :width="icon.width || 48"
+          />
+        </div>
         <VPImage
+          v-else-if="typeof icon === 'object'"
           :image="icon"
           :alt="icon.alt"
           :height="icon.height || 48"
           :width="icon.width || 48"
         />
-      </div>
-      <VPImage
-        v-else-if="typeof icon === 'object'"
-        :image="icon"
-        :alt="icon.alt"
-        :height="icon.height || 48"
-        :width="icon.width || 48"
-      />
-      <div v-else-if="icon" class="icon" v-html="icon"></div>
-      <h2 class="title" v-html="title"></h2>
+        <div v-else-if="icon" class="icon" v-html="icon"></div>
+        <span v-html="title"></span>
+      </h2>
       <p v-if="details" class="details" v-html="details"></p>
 
       <div v-if="linkText" class="link-text">
@@ -82,19 +84,21 @@ defineProps<{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
   border-radius: 6px;
   background-color: var(--vp-c-default-soft);
   width: 48px;
   height: 48px;
   font-size: 24px;
   transition: background-color 0.25s;
+  flex-shrink: 0;
 }
 
 .title {
   line-height: 24px;
   font-size: 16px;
   font-weight: 600;
+  display: flex;
+  align-items: center;
 }
 
 .details {
